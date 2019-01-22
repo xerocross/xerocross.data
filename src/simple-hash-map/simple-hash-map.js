@@ -1,5 +1,4 @@
 let SimpleHashMap = {
-
     build : function(numSlots, hashFunction) {
         let hashMap = {};
         let hashContainer = [];
