@@ -1,4 +1,4 @@
-# XeroCross DStructs
+# xerocross.data
 
 JavaScript implementations of some classic data structures.  There's nothing
 original here.  If there is anything useful here, it will be because of
