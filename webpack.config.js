@@ -6,7 +6,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "./"),
         filename: "xerocross-dstructs.js",
-        library: "xD",
+        library: "xerocross.data",
         libraryTarget: "umd",
         umdNamedDefine: true
     },

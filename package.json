@@ -1,6 +1,6 @@
 {
-  "name": "xerocross-dstructs",
-  "version": "0.3.2",
+  "name": "xerocross.data",
+  "version": "0.4.0",
   "description": "Some useful data structures implemented in JavaScript.",
   "main": "xerocross-dstructs.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xerocross/xerocross-dstructs.git"
+    "url": "https://github.com/xerocross/xerocross.data.git"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
