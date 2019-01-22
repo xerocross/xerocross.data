@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("xD", [], factory);
+		define("xerocross.data", [], factory);
 	else if(typeof exports === 'object')
-		exports["xD"] = factory();
+		exports["xerocross.data"] = factory();
 	else
-		root["xD"] = factory();
+		root["xerocross.data"] = factory();
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -104,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.SimpleHashMap = exports.buildBinaryMaxHeap = exports.buildLinkedList = undefined;
+exports.SimpleHashSet = exports.SimpleHashMap = exports.buildBinaryMaxHeap = exports.buildLinkedList = undefined;
 
 var _linkedList = __webpack_require__(1);
 
@@ -118,11 +118,16 @@ var _simpleHashMap = __webpack_require__(4);
 
 var _simpleHashMap2 = _interopRequireDefault(_simpleHashMap);
 
+var _simpleHashSet = __webpack_require__(5);
+
+var _simpleHashSet2 = _interopRequireDefault(_simpleHashSet);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var buildLinkedList = exports.buildLinkedList = _linkedList2.default.buildLinkedList;
 var buildBinaryMaxHeap = exports.buildBinaryMaxHeap = _binaryMaxHeap2.default.buildHeap;
 exports.SimpleHashMap = _simpleHashMap2.default;
+exports.SimpleHashSet = _simpleHashSet2.default;
 
 /***/ }),
 /* 1 */
@@ -345,7 +350,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var SimpleHashMap = {
-
     build: function build(numSlots, hashFunction) {
         var hashMap = {};
         var hashContainer = [];
@@ -452,6 +456,111 @@ var SimpleHashMap = {
 };
 
 exports.default = SimpleHashMap;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var SimpleHashSet = {
+    build: function build(numSlots, hashFunction) {
+        var hashSet = {};
+        var hashContainer = [];
+
+        if (typeof numSlots !== "number" || isNaN(numSlots) || numSlots <= 0) {
+            throw new Error("SimpleHashSet: numSlots must be > 0.");
+        }
+
+        if (hashFunction == undefined || typeof hashFunction !== "function") {
+            throw new Error("SimpleHashSet: improper or undefined hashfunction.");
+        }
+
+        for (var i = 0; i < numSlots; i++) {
+            hashContainer[i] = [];
+        }
+
+        var get = function get(key) {
+            var slotIndex = getSlotIndexFor(key);
+            if (hashContainer[slotIndex] == undefined) {
+                return null;
+            } else {
+                var arr = hashContainer[slotIndex];
+                for (var _i = 0; _i < arr.length; _i++) {
+                    if (arr[_i] == key) {
+                        return arr[_i];
+                    }
+                }
+                return null;
+            }
+        };
+
+        var getSlotIndexFor = function getSlotIndexFor(newElt) {
+            try {
+                var hash = hashFunction(newElt);
+                hash = hash % numSlots;
+                if (isNaN(hash)) {
+                    throw new Error("NaN");
+                }
+                while (hash < 0) {
+                    hash += numSlots;
+                }
+                return hash % numSlots;
+            } catch (e) {
+                throw new Error("SimpleHashSet: An unknown error occured with your SimpleHashSet hash function.");
+            }
+        };
+
+        hashSet.add = function (key) {
+            var item = get(key);
+            if (item != null) {
+                // do nothing
+            } else {
+                var slotIndex = getSlotIndexFor(key);
+                hashContainer[slotIndex].push(key);
+            }
+        };
+
+        hashSet.contains = function (key) {
+            return get(key) !== null;
+        };
+
+        hashSet.remove = function (key) {
+            var slotIndex = getSlotIndexFor(key);
+            if (hashContainer[slotIndex] == undefined) {
+                return true;
+            } else {
+                var arr = hashContainer[slotIndex];
+                var newArray = [];
+                for (var _i2 = 0; _i2 < arr.length; _i2++) {
+                    if (arr[_i2] != key) {
+                        newArray.push(arr[_i2]);
+                    }
+                }
+                hashContainer[slotIndex] = newArray;
+            }
+        };
+
+        hashSet.toList = function () {
+            var list = [];
+            for (var _i3 = 0; _i3 < hashContainer.length; _i3++) {
+                var slot = hashContainer[_i3];
+                for (var j = 0; j < slot.length; j++) {
+                    list.push(slot[j]);
+                }
+            }
+            return list;
+        };
+
+        return hashSet;
+    }
+};
+
+exports.default = SimpleHashSet;
 
 /***/ })
 /******/ ]);
